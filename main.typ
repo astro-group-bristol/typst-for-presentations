@@ -1,8 +1,8 @@
-#let slide(content) = content
-
 = Typst (for presentations)
 
 Hello World. The syntax is very similar to Markdown, and supports *bold* and _underline_.
+
+// this is a comment
 
 - Lists are also possible
 - Just like you're already used to
@@ -13,6 +13,7 @@ Hello World. The syntax is very similar to Markdown, and supports *bold* and _un
   mathematics, using a much simpler syntax than LaTeX.
 - And it can do *so much more*!
 
+#let slide(content) = content
 #slide[
   We can compile Typst documents (`*.typ`) using the `typst` compiler:
   ```
@@ -40,11 +41,13 @@ Hello World. The syntax is very similar to Markdown, and supports *bold* and _un
 #slide[
   = Concepts
 
-  Typst has a number of functions we can use to specify document layout. We can invoke a function using the `#` prefix. For example, `#lorem(40)` will generate:
+  Typst has a number of functions we can use to specify document layout. We can invoke a *function* using the `#` prefix. For example, `#lorem(40)` will generate:
 
   #lorem(40)
 
-  Functions can be used to insert content or to modify document state. The `text` function can be used to manipulate the properties of the text:
+  Functions can be used to *insert content* or to modify document state.
+
+  For example: the `text` function can be used to manipulate the properties of the text:
 
   ```
   #text(fill: red)[Hello World]
@@ -57,11 +60,17 @@ Hello World. The syntax is very similar to Markdown, and supports *bold* and _un
 #slide[
   == Scopes
 
+  (My nomenclature, not official)
+
   There are two types of scope in Typst:
   - `[content]`
   - `{logical}`
 
-  Logical scope treats every line as Typst syntax, so will invoke functions directly. If a scope immediately follows a function, it is passed as the last *positional argument*, as we saw with `#text(fill: red)[Hello World]`.
+  Logical scope treats every line as Typst syntax, so will invoke functions directly.
+
+  What happens in a scope, *stays in a scope*.
+
+  If a scope immediately follows a function, it is passed as the last *positional argument*, as we saw with `#text(fill: red)[Hello World]`.
 
   The properties of scopes can be modified using `set`. If used in the global scope, it will apply _from the moment it is invoked_.
 
@@ -93,16 +102,29 @@ Hello World. The syntax is very similar to Markdown, and supports *bold* and _un
   #set page(margin: 2cm, height: 30cm, width: 40cm)
   #set page(footer: [This will show on every page!])
   ```
+  // set the footer and page dimensions
 ]
 
 #slide[
   = Scripting
 
-  Typst has programming primitives including number types, array types, dictionaries, and strings. We can therefore use expressions and have Typst insert the result
+  Typst has programming primitives including number types, array types, dictionaries, and strings.
+
+  We can therefore use expressions and have Typst insert the result
   ```
   #{25 + 8}
   ```
   #{25 + 8}
+
+  Assign to variables:
+  ```
+  #let x = 38 + 3
+  #let x = x + 1
+  #x
+  ```
+  #let x = 38 + 3
+  #let x = x + 1
+  #x
 
   ```
   #{
@@ -118,6 +140,7 @@ Hello World. The syntax is very similar to Markdown, and supports *bold* and _un
       text(fill: colors.at(calc.rem(i.at(0), colors.len())), i.at(1))
     ).join(" ")
   }
+  The `=>` syntax specifies a lambda function (we'll see those more later).
 ]
 
 #slide[
@@ -134,13 +157,11 @@ Hello World. The syntax is very similar to Markdown, and supports *bold* and _un
   === Subsubsection
   ```
 
-  Say we wanted all of the `= Rules` to appear different. We can do that with a `show` rule:
+  Say we wanted all of the `= Section` to appear different. We can do that with a `show` rule:
   ```
   #show heading.where(level: 1): h => smallcaps(h)
   ```
   (There is really advanced introspection, but that's beyond what we'll cover today.)
-
-  Implicit in our `show` rule is a lambda function. It gives us every header, and we return what it should put there instead.
 ]
 
 #slide[
@@ -166,6 +187,8 @@ Hello World. The syntax is very similar to Markdown, and supports *bold* and _un
   #h(1fr)
   ```
   The `fr` is used to fill remaining.
+
+  // now we have everything to make a title slide
 ]
 
 #slide[
@@ -174,6 +197,11 @@ Hello World. The syntax is very similar to Markdown, and supports *bold* and _un
   There is a whole citation system that is Bibtex compatible. You cite with `@thing` or `cite(<thing>)`.
 
   The same syntax is used to refer to other things, such as figures or sections. You mark these with `<labels>` for them to be referable.
+
+  // now make a table of contents, and do a recursive reference
+  // #show heading.where(level: 1): h => smallcaps(h.body)
+  // #set heading(numbering: "1.")
+  // #outline()
 ]
 
 #slide[
