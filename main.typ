@@ -1,3 +1,4 @@
+
 = Typst (for presentations)
 
 Hello World. The syntax is very similar to Markdown, and supports *bold* and _underline_.
@@ -13,7 +14,7 @@ Hello World. The syntax is very similar to Markdown, and supports *bold* and _un
   mathematics, using a much simpler syntax than LaTeX.
 - And it can do *so much more*!
 
-#let slide(content) = content
+#let slide(i) = i
 #slide[
   We can compile Typst documents (`*.typ`) using the `typst` compiler:
   ```
@@ -21,6 +22,10 @@ Hello World. The syntax is very similar to Markdown, and supports *bold* and _un
   typst watch main.typ
   ```
   The latter with watch the file for changes and recompile when updated.
+]
+
+#slide[
+  == Useful options:
   ```
   typst compile --help
   ...
@@ -60,20 +65,18 @@ Hello World. The syntax is very similar to Markdown, and supports *bold* and _un
 #slide[
   == Scopes
 
-  (My nomenclature, not official)
 
-  There are two types of scope in Typst:
+  There are two types of scope (my nomenclature, not official):
   - `[content]`
   - `{logical}`
-
-  Logical scope treats every line as Typst syntax, so will invoke functions directly.
 
   What happens in a scope, *stays in a scope*.
 
   If a scope immediately follows a function, it is passed as the last *positional argument*, as we saw with `#text(fill: red)[Hello World]`.
+]
 
-  The properties of scopes can be modified using `set`. If used in the global scope, it will apply _from the moment it is invoked_.
-
+#slide[
+  The properties of scopes can be modified using `set`. It will apply _from the moment it is invoked_.
   ```
   #[
     This is fine. \
@@ -125,7 +128,10 @@ Hello World. The syntax is very similar to Markdown, and supports *bold* and _un
   #let x = 38 + 3
   #let x = x + 1
   #x
+]
 
+#slide[
+  == An array example
   ```
   #{
     let colors = (red, green, blue, yellow)
@@ -234,6 +240,36 @@ Hello World. The syntax is very similar to Markdown, and supports *bold* and _un
   #import "@preview/polylux:0.4.0": *
   #set page(paper: "presentation-4-3")
   ```
+
+// #import "@preview/polylux:0.4.0": *
+// #set page(paper: "presentation-4-3",
+//   margin: 1.5cm,
+//   footer: text(size: 8pt, [Fergus Baker / Astro Dev Group / #datetime.today().display()])
+// )
+// #set text(size: 20pt)
+
+  Can uncover elements
+  ```
+  #uncover("2-",
+    text(fill: red, [This will only show up on the next slide])
+  )
+  ```
+  // #uncover("2-", text(fill: red, [This will only show up on the next slide]))
+
+  // #uncover("3-")[But what if we had loads of these?]
+
+  // #uncover("4-")[... like ...]
+
+  // #{
+  //   let content = "we had a new slide for each word in this sentence?".split()
+
+  //   content.enumerate().map(
+  //     i => uncover(str(i.at(0) + 5) + "-", i.at(1))
+  //   ).join(" ")
+  // }
+
+
+  // #enable-handout-mode(true)
 ]
 
 #slide[
