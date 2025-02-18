@@ -1,20 +1,51 @@
+#let date = datetime.today().display()
+#set heading(numbering: "1.")
+#let location = "Astro Dev Group"
 
-= Typst (for presentations)
 
-Hello World. The syntax is very similar to Markdown, and supports *bold* and _underline_.
+#import "@preview/polylux:0.4.0": *
 
-// this is a comment
+#enable-handout-mode(true)
 
-- Lists are also possible
-- Just like you're already used to
-- And there's
-  $
-  hat(f)(x) = integral_(-infinity)^(infinity) f(x) e^(-2 i pi xi x) dif x,
-  $
-  mathematics, using a much simpler syntax than LaTeX.
-- And it can do *so much more*!
+#set page(paper: "presentation-4-3",
+  margin: 1.5cm,
+  footer: text(size: 8pt, [Fergus Baker / #location / #date #h(1fr) #toolbox.slide-number])
+)
+#set text(size: 20pt)
 
-#let slide(i) = i
+#show heading.where(level: 1): h => text(fill: red, smallcaps(h))
+
+#set text(font: "NimbusSanL")
+
+#slide[
+  #set page(footer: none)
+  #text(size: 150pt, weight: "black", tracking: -10pt)[Typst] (for presentations)
+
+  #v(1fr)
+  Fergus Baker #h(1fr) #date \
+  #location
+]
+
+#slide[
+  #outline(depth: 1)
+]
+
+#slide[
+  Hello World. The syntax is very similar to Markdown, and supports *bold* and _underline_.
+
+  // this is a comment
+
+  - Lists are also possible
+  - Just like you're already used to
+  - And there's
+    $
+    hat(f)(x) = integral_(-infinity)^(infinity) f(x) e^(-2 i pi xi x) dif x,
+    $
+    mathematics, using a much simpler syntax than LaTeX.
+  - And it can do *so much more*!
+
+]
+
 #slide[
   We can compile Typst documents (`*.typ`) using the `typst` compiler:
   ```
@@ -58,6 +89,7 @@ Hello World. The syntax is very similar to Markdown, and supports *bold* and _un
   #text(fill: red)[Hello World]
   ```
   #text(fill: red)[Hello World]
+  #text(fill: red, "Hello World")
 
   Note the use of `[]` square brackets.
 ]
@@ -198,11 +230,13 @@ Hello World. The syntax is very similar to Markdown, and supports *bold* and _un
 ]
 
 #slide[
-  = References
+  = References <sec-references>
 
   There is a whole citation system that is Bibtex compatible. You cite with `@thing` or `cite(<thing>)`.
 
   The same syntax is used to refer to other things, such as figures or sections. You mark these with `<labels>` for them to be referable.
+
+  This is a recursive reference, see @sec-references.
 
   // now make a table of contents, and do a recursive reference
   // #show heading.where(level: 1): h => smallcaps(h.body)
@@ -241,39 +275,67 @@ Hello World. The syntax is very similar to Markdown, and supports *bold* and _un
   #set page(paper: "presentation-4-3")
   ```
 
-// #import "@preview/polylux:0.4.0": *
-// #set page(paper: "presentation-4-3",
-//   margin: 1.5cm,
-//   footer: text(size: 8pt, [Fergus Baker / Astro Dev Group / #datetime.today().display()])
-// )
-// #set text(size: 20pt)
-
   Can uncover elements
   ```
   #uncover("2-",
     text(fill: red, [This will only show up on the next slide])
   )
   ```
-  // #uncover("2-", text(fill: red, [This will only show up on the next slide]))
+  #uncover("2-", text(fill: red, [This will only show up on the next slide]))
 
-  // #uncover("3-")[But what if we had loads of these?]
+  #uncover("3-")[But what if we had loads of these?]
 
-  // #uncover("4-")[... like ...]
+  #uncover("4-")[... like ...]
 
-  // #{
-  //   let content = "we had a new slide for each word in this sentence?".split()
+  #{
+    let content = "we had a new slide for each word in this sentence?".split()
 
-  //   content.enumerate().map(
-  //     i => uncover(str(i.at(0) + 5) + "-", i.at(1))
-  //   ).join(" ")
-  // }
+    content.enumerate().map(
+      i => uncover(str(i.at(0) + 5) + "-", i.at(1))
+    ).join(" ")
+  }
 
 
   // #enable-handout-mode(true)
 ]
 
 #slide[
-  Putting it all together
+  #grid(
+      columns: (50%, 1fr),
+      column-gutter: 20pt,
+      [
+        #figure(
+          image("assets/hello.png", width: 100%),
+          caption: [This is an example.]
+        ) <fig-thing>
+      ],
+      [
+        See @fig-thing.
+
+        #lorem(40)
+      ]
+  )
+
+
+]
+
+
+#slide[
+  #set align(center)
+  #set align(horizon)
+  #text(weight: "black", size: 120pt)[Questions?]
+]
+
+#slide[
+  #set align(center)
+  #set align(horizon)
+  #text(weight: "black", size: 120pt)[AOB]
+]
+
+#slide[
+  #set align(center)
+  #set align(horizon)
+  #text(weight: "black", size: 120pt)[Pub?]
 ]
 
 
