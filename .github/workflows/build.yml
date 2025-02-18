@@ -1,0 +1,37 @@
+name: Compile
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "src/**.typ"
+  workflow_dispatch:
+
+jobs:
+  render-paper:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: typst-community/setup-typst@v3
+        with:
+          cache-dependency-path: requirements.typ
+      - name: Get current date
+        id: date
+        run: echo "date=$(date +'compiled-%Y-%m-%d-%H-%M-%S')" >> $GITHUB_OUTPUT
+      - name: Compile
+        run: |
+          unzip fonts/nimbus-sans-l.zip -d fonts
+          mv fonts/nimbus-sans-l/* fonts
+          typst compile --font-path fonts src/main.typ ${{ steps.date.outputs.date }}.pdf
+      - name: Upload release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: ${{ steps.date.outputs.date }}.pdf
+          name: ${{ steps.date.outputs.date }}
+          tag_name: ${{ steps.date.outputs.date }}
+
+
+
