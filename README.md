@@ -9,3 +9,6 @@ Fetch the slides from the [latest release](https://github.com/astro-group-bristo
 ## References
 
 - [Nimbus Sans L Font](https://fontlibrary.org/en/font/nimbus-sans-l), GPL
+- [Typst](https://typst.app/), ([Docs](https://typst.app/docs/))
+- [Polylux](https://polylux.dev/book/)
+
